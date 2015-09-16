@@ -1,0 +1,173 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Canvas</title>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width,user-scalable=no,minimum-scale=1,maximum-scale=1" />
+    <script src="//code.jquery.com/jquery-1.11.3.min.js"></script>
+    <script src="../src/jCanvas.js"></script>
+    <style type="text/css">
+        html { overflow: auto; }
+        body { margin: 5px 0 0 5px; }
+        .a1 { display: inline-block; margin: 10px 10px 10px 0; width: 32px; height: 32px; line-height: 32px; text-align: center; border: 1px solid #ccc; text-decoration: none; }
+    </style>
+</head>
+<body>
+<script>
+    //触摸事件的简单适配
+    function touchProxy(calbk) {
+        return function (e) {
+            var pe = e;
+            if (e.touches && e.touches.length) e = e.touches[0];
+            if (e.originalEvent) e = e.originalEvent;
+            if (e.targetTouches && e.targetTouches.length) e = e.targetTouches[0] || e;
+            if (calbk(e) == false) {
+                pe.stopPropagation();
+                pe.preventDefault();
+                pe.handled = true;
+            }
+        };
+    }
+    //触摸范围管理
+    function startTouch(ele, obj) {
+        var doc = $(document.body);
+        var move = touchProxy(function (e) {
+            if (obj.move) return obj.move(e);
+        });
+        var ex = 0;
+        var up = function () {
+            if (!ex) return;
+            ex = false;
+            doc.off("mousemove touchmove", move);
+            doc.off("mouseup touchend", up);
+            if (obj.up) return obj.up();
+        };
+        ele.on("mousedown touchstart", touchProxy(function (e) {
+            if (ex) return;
+            ex = true;
+            doc.on("mousemove touchmove", move);
+            doc.on("mouseup touchend", up);
+            if (obj.down) return obj.down(e);
+        }));
+    }
+    var img = new Image();
+    img.onload = function () {
+        var w1 = document.documentElement.clientWidth - 10, h1 = w1 / img.width * img.height;
+        var dx = 5, dy = 5;
+
+        //背景图
+        var bg = new Image();
+        bg.src = img.src;
+        $(bg).width(w1).height(h1).appendTo(document.body).css({
+            position: "absolute",
+            left: dx + "px",
+            top: dy + "px"
+        });
+
+        //编辑框
+        var stage = jCanvas.stage();
+        stage.resize(w1, h1);
+        stage.appendTo(document.body);
+        $(stage._element).css({
+            position: "relative",
+            opacity: 0.6
+        });
+
+        //保存的线条数据
+        var list = [];
+        var clear = function () {
+            list = [];
+            stage.removeAllChildren();
+            mask.appendTo(stage);
+        };
+
+        //输入模式
+        var mode = 0;
+
+        //工具栏
+        var createA = function () {
+            var a = $(document.createElement("a")).addClass("a1")[0];
+            a.href = "javascript:;";
+            return a;
+        };
+
+        var add_mode = createA();
+        add_mode.style.border = "1px solid red";
+        add_mode.innerHTML = "+";
+        add_mode.onclick = function () {
+            mode = 0;
+            remove_mode.style.border = "1px solid #ccc";
+            add_mode.style.border = "1px solid red";
+        };
+        document.body.appendChild(add_mode);
+
+        var remove_mode = createA();
+        remove_mode.innerHTML = "-";
+        remove_mode.onclick = function () {
+            mode = 1;
+            remove_mode.style.border = "1px solid red";
+            add_mode.style.border = "1px solid #ccc";
+        };
+        document.body.appendChild(remove_mode);
+
+        var clear_btn = createA();
+        clear_btn.innerHTML = "x";
+        clear_btn.onclick = function () {
+            clear();
+        };
+        document.body.appendChild(clear_btn);
+
+        var lineWidth = Math.round((w1 + 10) / 16);
+
+        //生成目标图片
+        var ok_btn = createA();
+        ok_btn.innerHTML = "OK";
+        var tar;
+        ok_btn.onclick = function () {
+            if (tar) document.body.removeChild(tar._element);
+            tar = jCanvas.stage();
+            tar.appendTo(document.body);
+            tar.resize(w1, h1);
+            list.forEach(function (o) {
+                jCanvas.polygon().strokeWidth(lineWidth).stroke("#ffffff").compositeOperation(o.mode ? "destination-out" : "source-over").path(o.draw).appendTo(tar);
+            });
+            jCanvas.image().src(img).scale(w1 / img.width).compositeOperation("source-in").appendTo(tar);
+        };
+        document.body.appendChild(ok_btn);
+
+
+        var cur;
+        //鼠标事件
+        startTouch($(stage._element), {
+            down: function (e) {
+                var ex = e.pageX - dx;
+                var ey = e.pageY - dy;
+                cur = {
+                    path: jCanvas.polygon().path([ex, ey, ex + 0.01, ey + 0.01]).strokeWidth(lineWidth).stroke("#6666cc").appendTo(stage).compositeOperation(mode ? "destination-out" : "source-over"),
+                    data: {
+                        mode: mode,
+                        draw: []
+                    }
+                };
+                return false;
+            },
+            move: function (e) {
+                if (!cur) return;
+                cur.data.draw.push(e.pageX - dx);
+                cur.data.draw.push(e.pageY - dy);
+                if (cur.data.draw.length > 2) cur.path.path(cur.data.draw);
+                stage.triggerChanged(); //可能需要手动更新
+                return false;
+            },
+            up: function () {
+                if (!cur) return;
+                list.push(cur.data);
+                cur = null;
+                return false;
+            }
+        });
+    };
+    img.src = "demo.jpg";
+</script>
+</body>
+</html>
