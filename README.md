@@ -1,6 +1,4 @@
-这是一个简单易用的canvas api。
-
-
+这是一个简单易用的html5 canvas api。
 ## 初始化
 ```javascript
 var stage = jCanvas.stage().resize(300, 200).appendTo(document.body);

@@ -100,9 +100,9 @@ jCanvas.image().src("demo.jpg").x(-150).y(-100).width(300).height(200).appendTo(
 jCanvas.text().text("Hello World").fontSize(36).textAlign("center").textBaseline("middle").fill("red").appendTo(group);
 </script>
 <script>
-    $("script[name=demo]").each(function(i, o){
-       $("<pre></pre>").text(o.innerText).insertBefore(o);
-    });
+$("script[name=demo]").each(function(i, o){
+   $("<pre></pre>").text(o.innerText).insertBefore(o);
+});
 </script>
 </body>
 </html>
