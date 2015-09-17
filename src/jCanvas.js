@@ -3,7 +3,7 @@
  */
 var jCanvas = (function () {
     /**
-	 * @property ÀàĞÍ·½·¨
+	 * @property ç±»å‹æ–¹æ³•
 	 */
     var cls = {
         copy: function (obj) {
@@ -20,12 +20,12 @@ var jCanvas = (function () {
                 if (oi) return oi;
             }
         },
-        //ÊÂ¼şÄ£°æ
+        //äº‹ä»¶æ¨¡ç‰ˆ
         events: {
             /**
-			 * @method ×¢²áÊÂ¼ş
-			 * @param event_name Ê±¼äÃû³Æ
-			 * @param callback ÊÂ¼ş»Øµ÷
+			 * @method æ³¨å†Œäº‹ä»¶
+			 * @param event_name æ—¶é—´åç§°
+			 * @param callback äº‹ä»¶å›è°ƒ
 			 */
             on: function (event_name, callback) {
                 if (!this._events) this._events = {};
@@ -34,9 +34,9 @@ var jCanvas = (function () {
                 return this;
             },
             /**
-			 * @method ×¢ÏúÊÂ¼ş
-			 * @param event_name ÊÂ¼şÃû³Æ
-			 * @param callback Òª×¢ÏúµÄ»Øµ÷¡£Èç¹ûÎª¿ÕÔò×¢Ïú¸ÃÊÂ¼şµÄËùÓĞ»Øµ÷¡£
+			 * @method æ³¨é”€äº‹ä»¶
+			 * @param event_name äº‹ä»¶åç§°
+			 * @param callback è¦æ³¨é”€çš„å›è°ƒã€‚å¦‚æœä¸ºç©ºåˆ™æ³¨é”€è¯¥äº‹ä»¶çš„æ‰€æœ‰å›è°ƒã€‚
 			 */
             off: function (event_name, callback) {
                 if (!this._events) return this;
@@ -57,8 +57,8 @@ var jCanvas = (function () {
                 return this;
             },
             /**
-			 * @method ´¥·¢ÊÂ¼ş
-			 * @param event_name ´¥·¢µÄÊÂ¼şÃû³Æ
+			 * @method è§¦å‘äº‹ä»¶
+			 * @param event_name è§¦å‘çš„äº‹ä»¶åç§°
 			 */
             trigger: function (event_name) {
                 if (!this._events) return this;
@@ -75,7 +75,7 @@ var jCanvas = (function () {
             }
         },
         /**
-		 * @method Îª¶ÔÏóÌí¼ÓÊôĞÔÖ§³Ö£¨µ¥·½·¨£¬´«²ÎÉèÖÃµ±Ç°Öµ£¬ÎŞ²Î·µ»Øµ±Ç°Öµ£©
+		 * @method ä¸ºå¯¹è±¡æ·»åŠ å±æ€§æ”¯æŒï¼ˆå•æ–¹æ³•ï¼Œä¼ å‚è®¾ç½®å½“å‰å€¼ï¼Œæ— å‚è¿”å›å½“å‰å€¼ï¼‰
 		 */
         createSetter: function (name, defaultValue, setFunction) {
             return function (v) {
@@ -91,14 +91,14 @@ var jCanvas = (function () {
             };
         },
         /**
-		 * @method Îª¶ÔÏóÌí¼ÓÊôĞÔÖ§³Ö£¨µ¥·½·¨£¬´«²ÎÉèÖÃµ±Ç°Öµ£¬ÎŞ²Î·µ»Øµ±Ç°Öµ£©
+		 * @method ä¸ºå¯¹è±¡æ·»åŠ å±æ€§æ”¯æŒï¼ˆå•æ–¹æ³•ï¼Œä¼ å‚è®¾ç½®å½“å‰å€¼ï¼Œæ— å‚è¿”å›å½“å‰å€¼ï¼‰
 		 */
         createMethod: function (classRef, name, defaultValue, setFunction) {
             classRef.prototype[name] = this.createSetter(name, defaultValue, setFunction);
             return classRef;
         },
         /**
-		 * @method Îª¶ÔÏóÌí¼ÓÊÂ¼şÖ§³Ö
+		 * @method ä¸ºå¯¹è±¡æ·»åŠ äº‹ä»¶æ”¯æŒ
 		 */
         createEventSupport: function (classRef) {
             this.copy(classRef.prototype, this.events);
@@ -108,7 +108,7 @@ var jCanvas = (function () {
 
     var v = {};
     //shapeObj----------------------------------
-    //ÏÂÁĞ²ÎÊıÔÚÉèÖÃÁËmatrixºó½«ÎŞĞ§£¨Opacity³ıÍâ£©
+    //ä¸‹åˆ—å‚æ•°åœ¨è®¾ç½®äº†matrixåå°†æ— æ•ˆï¼ˆOpacityé™¤å¤–ï¼‰
     var shapeObjProperties = {
         scaleX: 1,
         scaleY: 1,
@@ -128,12 +128,12 @@ var jCanvas = (function () {
         compositeOperation: null
     };
 
-    //³ÊÏÖ¶ÔÏó
+    //å‘ˆç°å¯¹è±¡
     var shapeObj = (function () {
         var t = function () { };
-        //ÊÂ¼şÖ§³Ö
+        //äº‹ä»¶æ”¯æŒ
         cls.createEventSupport(t);
-        //ÊôĞÔ
+        //å±æ€§
         var _setFunction = function (v, name) {
             this._ischanged = true;
             if (name) {
@@ -146,7 +146,7 @@ var jCanvas = (function () {
         for (var i in shapeObjFeilds) cls.createMethod(t, i, shapeObjFeilds[i], _setFunction);
 
         //matrix
-        //ÊôĞÔ
+        //å±æ€§
         var _setMatrix = function (v, name) {
             this.triggerChanged(v, name);
             if (!this._hasTransform) this._hasTransform = true;
@@ -173,9 +173,9 @@ var jCanvas = (function () {
         return t;
     })();
 
-    //ÈİÆ÷
+    //å®¹å™¨
     var asGroup = (function () {
-        //Ìí¼Ó
+        //æ·»åŠ 
         var append = function () {
             for (var i = 0; i < arguments.length; ++i) {
                 var o = arguments[i];
@@ -190,7 +190,7 @@ var jCanvas = (function () {
             this.triggerChanged();
             return this;
         };
-        //É¾³ı
+        //åˆ é™¤
         var removeChildren = function () {
             if (!this._children) return this;
             for (var i = 0; i < arguments.length; ++i) {
@@ -212,7 +212,7 @@ var jCanvas = (function () {
             list.forEach(function (o) { t.removeChildren(o); });
             return this;
         };
-        //·µ»Ø·½·¨
+        //è¿”å›æ–¹æ³•
         return function (classRef) {
             classRef.prototype.append = append;
             classRef.prototype.removeChildren = removeChildren;
@@ -220,26 +220,26 @@ var jCanvas = (function () {
         };
     })();
 
-    //ĞÂ½¨ÀàĞÍ
+    //æ–°å»ºç±»å‹
     v.createShapeType = (function () {
         var _idCount = 0;
         var t = function () {
             this._id = ++_idCount;
         };
         cls.copy(t.prototype, shapeObj.prototype);
-        //ÒÆ³ı
+        //ç§»é™¤
         t.prototype.remove = function () {
             if (this._parent) this._parent.removeChildren(this);
             return this;
         };
-        //Ìí¼Óµ½
+        //æ·»åŠ åˆ°
         t.prototype.appendTo = function (par) {
             par.append(this);
             return this;
         };
-        //ĞÂ½¨ÀàĞÍ
+        //æ–°å»ºç±»å‹
         return function (name, attrs, asgroup) {
-            //´´½¨ÀàĞÍ
+            //åˆ›å»ºç±»å‹
             var ref = function (prop) {
                 t.call(this);
                 for (var i in prop) {
@@ -248,26 +248,26 @@ var jCanvas = (function () {
             };
             cls.copy(ref.prototype, t.prototype);
             if (asgroup) asGroup(ref);
-            //´´½¨ÀàĞÍ·½·¨
+            //åˆ›å»ºç±»å‹æ–¹æ³•
             if (attrs) for (var i in attrs) {
                 cls.createMethod(ref, i, attrs[i], ref.prototype.triggerChanged);
             }
-            //·µ»ØÀàĞÍ
+            //è¿”å›ç±»å‹
             ref.prototype.name = function () {
                 return name;
             };
-            //µÃµ½µ±Ç°ËùÓĞÖµ
+            //å¾—åˆ°å½“å‰æ‰€æœ‰å€¼
             ref.prototype.values = function () {
                 return cls.copy({}, shapeObjProperties, shapeObjFeilds, attrs, this._properties);
             };
-            //·µ»Ø¹¤³§·½·¨
+            //è¿”å›å·¥å‚æ–¹æ³•
             v[name] = function (prop) {
                 return new ref(prop);
             };
         };
     })();
 
-    //×ÖÌåÃ¶¾Ù
+    //å­—ä½“æšä¸¾
     v.fontWeight = {
         normal: 'normal',
         bold: 'bold',
@@ -300,8 +300,8 @@ var jCanvas = (function () {
         right: "right"
     };
 
-    //³£ÓÃµÄÊôĞÔ
-    //±ß¿òºÍÌî³ä
+    //å¸¸ç”¨çš„å±æ€§
+    //è¾¹æ¡†å’Œå¡«å……
     var _fills = {
         fill: null,
         strokeWidth: 0,
@@ -311,35 +311,35 @@ var jCanvas = (function () {
         stroke: null
     };
 
-    //Ïß¶Î
+    //çº¿æ®µ
     v.createShapeType('line', cls.copy({
         x1: 0, y1: 0,
         x2: 0, y2: 0
     }, _fills));
 
-    //Â·¾¶
+    //è·¯å¾„
     v.createShapeType('path', cls.copy({
         path: null
     }, _fills));
-    //Ô²ĞÎ
+    //åœ†å½¢
     v.createShapeType('circle', cls.copy({
         cx: 0,
         cy: 0,
         r: 0
     }, _fills));
-    //¾ØĞÎ
+    //çŸ©å½¢
     v.createShapeType('rect', cls.copy({
         x: 0,
         y: 0,
         width: 0,
         height: 0
     }, _fills));
-    //¶à±ßĞÎ
+    //å¤šè¾¹å½¢
     v.createShapeType('polygon', cls.copy({
         path: null,
         close: false
     }, _fills));
-    //Í¼Æ¬
+    //å›¾ç‰‡
     v.createShapeType('image', {
         src: null,
         width: 0,
@@ -352,10 +352,10 @@ var jCanvas = (function () {
         cy: 0
     });
 
-    //×éºÏ
+    //ç»„åˆ
     v.createShapeType('group', null, true);
 
-    //ÎÄ×Ö
+    //æ–‡å­—
     v.createShapeType("text", cls.copy({
         text: null,
         fontSize: null,
@@ -370,7 +370,7 @@ var jCanvas = (function () {
     }, _fills));
 
 
-    //zIndexÅÅĞò
+    //zIndexæ’åº
     var sortedChildren = function () {
         this._l = [];
         this._c = {};
@@ -407,24 +407,24 @@ var jCanvas = (function () {
         }
     };
 
-    //¶¨Ê±Æ÷ÊµÏÖ
+    //å®šæ—¶å™¨å®ç°
     var make_timer = (function () {
         var aframe = cls.or(window, 'r,webkitR,msR,mozR'.split(','), 'equestAnimationFrame');
         var cframe = cls.or(window, 'c,webkitC,msC,mozC'.split(','), 'ancelAnimationFrame') || clearInterval;
         //aframe = null;
         //cframe = clearInterval;
-        //×Ô¶¯Ë¢ĞÂ
+        //è‡ªåŠ¨åˆ·æ–°
         var _startTimer = function () {
             if (this._killTimer) return;
 
             //*
-            //Ê¹ÓÃ¶àÃ½Ìå¶¨Ê±Æ÷
+            //ä½¿ç”¨å¤šåª’ä½“å®šæ—¶å™¨
             var timer, that = this;
             var ticker = function () {
                 if (!that._killTimer) return;
                 if (that._killTimer) {
                     that._objectNumber = 0;
-                    if (that._ticker) that._ticker(); //µ÷ÓÃË¢ĞÂ
+                    if (that._ticker) that._ticker(); //è°ƒç”¨åˆ·æ–°
                 }
                 if (aframe) timer = aframe(ticker);
             };
@@ -433,10 +433,10 @@ var jCanvas = (function () {
                 if (timer) cframe(timer);
                 this._killTimer = undefined;
             };
-            //±ØĞëÔÚ_killTimerºóÃæµ÷ÓÃ
+            //å¿…é¡»åœ¨_killTimeråé¢è°ƒç”¨
             ticker();
         };
-        //Í¨ÖªÉÏ²ã±ä»¯
+        //é€šçŸ¥ä¸Šå±‚å˜åŒ–
         var triggerChanged = function () {
             this._ischanged = true;
             this._killNumber = 0;
@@ -449,15 +449,15 @@ var jCanvas = (function () {
         }
     })();
 
-    //»­²¼ÊµÏÖ
+    //ç”»å¸ƒå®ç°
     v.stage = (function () {
-        //Êı¾İ¸ü¸ÄÊÂ¼ş
+        //æ•°æ®æ›´æ”¹äº‹ä»¶
         var _zChanged = function (v) {
             var p = this._parent._sortedChs;
             p.remove(this);
             p.append(this, v);
         };
-        //É¾³ıÏÔÊ¾
+        //åˆ é™¤æ˜¾ç¤º
         var _removeSorted = function (o) {
             o.off("zIndex", _zChanged);
             o.off("appendChild", _appendChild);
@@ -473,7 +473,7 @@ var jCanvas = (function () {
             if (p) p.remove(this);
             _removeSorted(this);
         };
-        //Ìí¼ÓÏÔÊ¾
+        //æ·»åŠ æ˜¾ç¤º
         var _appendChild = function (o) {
             var p = o._parent;
             if (!p._sortedChs) p._sortedChs = new sortedChildren();
@@ -487,26 +487,26 @@ var jCanvas = (function () {
             if (!e) return;
             for (var i in e) _appendChild(e[i]);
         };
-        //canvasÀàµÄ¹¹Ôìº¯Êı
+        //canvasç±»çš„æ„é€ å‡½æ•°
         var t = function () {
             var ele = document.createElement('canvas');
             this._canvas = ele.getContext('2d');
             this._element = ele;
             this._killNumber = 0;
 
-            //Ìí¼ÓÏÔÊ¾
+            //æ·»åŠ æ˜¾ç¤º
             this.on("appendChild", _appendChild);
         };
         cls.createEventSupport(t);
         asGroup(t);
-        //Ìí¼Óµ½div
+        //æ·»åŠ åˆ°div
         t.prototype.appendTo = function (par) {
             if (par.append) par.append(this._element);
             else par.appendChild(this._element);
             return this;
         };
-        //³ÊÏÖÏßÌõºÍÌî³ä
-        //todo£ºÖ§³Ö½¥±äÌî³äºÍÍ¼Æ¬Ìî³ä
+        //å‘ˆç°çº¿æ¡å’Œå¡«å……
+        //todoï¼šæ”¯æŒæ¸å˜å¡«å……å’Œå›¾ç‰‡å¡«å……
         var _strokeJ = function (ctx, prop) {
             var sw = prop.strokeWidth(), s = prop.stroke();
             if (sw && s) {
@@ -534,18 +534,18 @@ var jCanvas = (function () {
             if (_fillJ(ctx, prop)) ctx.fill();
             if (_strokeJ(ctx, prop)) ctx.stroke();
         };
-        //»æÖÆ
+        //ç»˜åˆ¶
         var draw = {
-            //»æÖÆÏßÌõ
+            //ç»˜åˆ¶çº¿æ¡
             line: function (ctx, prop) {
                 ctx.beginPath();
                 ctx.moveTo(prop.x1(), prop.y1());
                 ctx.lineTo(prop.x2(), prop.y2());
                 _strokeFill(ctx, prop);
             },
-            //Â·¾¶
+            //è·¯å¾„
             path: (function () {
-                //path½âÎö
+                //pathè§£æ
                 var pathDef = {
                     M: 2,
                     L: 2,
@@ -568,7 +568,7 @@ var jCanvas = (function () {
                     Z: 'closePath'
                 };
 
-                //Â·¾¶½âÎö,todo:»¹Ã»ÓĞ´¦ÀíHVÃüÁî£¬Ã»ÓĞ´¦ÀíĞ¡Ğ´×ÖÄ¸
+                //è·¯å¾„è§£æ,todo:è¿˜æ²¡æœ‰å¤„ç†HVå‘½ä»¤ï¼Œæ²¡æœ‰å¤„ç†å°å†™å­—æ¯
                 function canvasPath(str) {
                     var com = [];
                     if (!str) return com;
@@ -601,20 +601,20 @@ var jCanvas = (function () {
                         if (!cmd) break;
                         var ucmd = cmd.toUpperCase();
 
-                        if (ucmd != cmd) throw new Error("»¹²»ÄÜ´¦ÀíĞ¡Ğ´");
+                        if (ucmd != cmd) throw new Error("è¿˜ä¸èƒ½å¤„ç†å°å†™");
 
-                        //´¦Àíº¯Êı
+                        //å¤„ç†å‡½æ•°
                         var sf = canvasPathDef[ucmd];
-                        if (!sf) throw new Error("Î´ÖªµÄÃüÁî£º" + cmd);
+                        if (!sf) throw new Error("æœªçŸ¥çš„å‘½ä»¤ï¼š" + cmd);
 
-                        //²ÎÊıÁĞ±í
+                        //å‚æ•°åˆ—è¡¨
                         var len = pathDef[ucmd];
                         var ps = [];
                         for (var i = 0; i < len; ++i) {
                             ps.push(readNumber());
                         }
 
-                        //´¦Àí
+                        //å¤„ç†
                         com.push([sf, ps]);
                     }
 
@@ -637,14 +637,14 @@ var jCanvas = (function () {
                     _strokeFill(ctx, prop);
                 };
             })(),
-            //Ô²ĞÎ
+            //åœ†å½¢
             circle: function (ctx, prop) {
                 ctx.beginPath();
                 ctx.arc(prop.cx(), prop.cy(), prop.r(), 0, Math.PI, false);
                 ctx.arc(prop.cx(), prop.cy(), prop.r(), Math.PI, Math.PI * 2, false);
                 _strokeFill(ctx, prop);
             },
-            //¾ØĞÎ
+            //çŸ©å½¢
             rect: function (ctx, prop) {
                 ctx.beginPath();
                 ctx.moveTo(prop.x(), prop.y());
@@ -654,7 +654,7 @@ var jCanvas = (function () {
                 ctx.closePath();
                 _strokeFill(ctx, prop);
             },
-            //¶à±ßĞÎ
+            //å¤šè¾¹å½¢
             polygon: function (ctx, prop) {
                 var p = prop.path();
                     console.log(p);
@@ -667,14 +667,17 @@ var jCanvas = (function () {
                 if (prop.close()) ctx.closePath();
                 _strokeFill(ctx, prop);
             },
-            //Í¼Æ¬
+            //å›¾ç‰‡
             image: function (ctx, prop) {
                 var img;
                 if (!prop._cache || prop._cache.src != prop.src()) {
                     if (typeof prop.src() == 'string') {
                         img = new Image();
+                        img.onload = function() {
+                            prop.triggerChanged();
+                        };
                         img.src = prop.src();
-                    } else img = prop.src(); //Ö§³ÖÖ±½Ó³öÈëÍ¼Æ¬
+                    } else img = prop.src(); //æ”¯æŒç›´æ¥å‡ºå…¥å›¾ç‰‡
                     prop._cache = {
                         src: prop.src(),
                         image: img
@@ -699,15 +702,15 @@ var jCanvas = (function () {
                     }
                 } catch (e) { }
             },
-            //×éºÏ
+            //ç»„åˆ
             group: function (ctx, prop) {
                 prop._sortedChs && prop._sortedChs.each(function (oi, e) { e._drawItem(ctx, oi); }, this);
             },
-            //ÎÄ×Ö
+            //æ–‡å­—
             text: function (ctx, prop) {
                 if (!prop.text()) return;
 
-                //Æ´½Ó×ÖÌåÑùÊ½
+                //æ‹¼æ¥å­—ä½“æ ·å¼
                 var s = '';
                 var tmp = prop.fontStyle();
                 if (tmp && (tmp in v.fontStyle)) s += tmp + " ";
@@ -751,9 +754,9 @@ var jCanvas = (function () {
                 }
             }
         };
-        //¿ª·Å»æÖÆº¯Êı£¬·½±ãÀ©Õ¹
+        //å¼€æ”¾ç»˜åˆ¶å‡½æ•°ï¼Œæ–¹ä¾¿æ‰©å±•
         t.draws = draw;
-        //»æÖÆ¶ÔÏó
+        //ç»˜åˆ¶å¯¹è±¡
         t.prototype._drawItem = function (ctx, prop) {
             var opt = prop.opacity();
             if (opt == 0) return;
@@ -789,7 +792,7 @@ var jCanvas = (function () {
                 cpo = ctx.globalCompositeOperation;
                 ctx.globalCompositeOperation = prop.compositeOperation();
             }
-            //todo£ºcheck unsurported types
+            //todoï¼šcheck unsurported types
             draw[prop.name()].call(this, ctx, prop);
 
             if (tr || sh) ctx.restore();
@@ -798,7 +801,7 @@ var jCanvas = (function () {
 
             prop._ischanged = false;
         };
-        //ÕûÌå»æÖÆ
+        //æ•´ä½“ç»˜åˆ¶
         t.prototype._draw = function (force) {
             if (!force && !this._ischanged) {
                 return;
@@ -815,19 +818,19 @@ var jCanvas = (function () {
             this._canvas.clearRect(0, 0, this._element.width, this._element.height);
             this._sortedChs && this._sortedChs.each(function (oi, e) { e._drawItem(e._canvas, oi); }, this);
         };
-        //ÖØÖÃ´óĞ¡
+        //é‡ç½®å¤§å°
         t.prototype.resize = function (w, h) {
             this._element.width = w;
             this._element.height = h;
             this._draw(true);
             return this;
         };
-        //Ë¢ĞÂ
+        //åˆ·æ–°
         t.prototype._ticker = function () {
             this._draw();
         };
         make_timer(t);
-        //¼ÓÔØ×ÊÔ´
+        //åŠ è½½èµ„æº
         t.prototype.load = function (urls, progress) {
             if (!urls || !urls.length) {
                 if (progress) progress(0, 0);
