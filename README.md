@@ -55,7 +55,7 @@ jCanvas.rect().width(200).height(100).x(20).y(20).fill("red").stroke("green").st
 var stage = jCanvas.stage().resize(300, 200).appendTo(document.body);
 jCanvas.path().path("M20 20L200 100L100 150Z").fill("red").stroke("green").strokeWidth(5).appendTo(stage);
 jCanvas.polygon().path([40, 40, 180, 80, 80, 130]).close(true).fill("red").stroke("green").strokeWidth(5).appendTo(stage);
-    ```
+```
 ## 其他
 ### jCanvas.group
 分组对象，组合子对象，并统一变换
