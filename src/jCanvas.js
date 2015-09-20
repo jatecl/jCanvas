@@ -428,7 +428,7 @@ var jCanvas = (function () {
                 }
                 if (aframe) timer = aframe(ticker);
             };
-            if (!aframe) timer = setInterval(ticker);
+            if (!aframe) timer = setInterval(ticker, 16);
             this._killTimer = function () {
                 if (timer) cframe(timer);
                 this._killTimer = undefined;
@@ -778,7 +778,7 @@ var jCanvas = (function () {
                     ctx.transform.apply(ctx, prop.matrix());
                 }
                 preOpt = ctx.globalAlpha;
-                if (opt < 1) ctx.globalAlpha *= opt;
+                if (opt < 1) ctx.globalAlpha = preOpt * opt;
             }
             if (sh) {
                 ctx.shadowColor = prop.shadowColor();

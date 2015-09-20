@@ -1,0 +1,34 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <title>Canvas</title>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width,user-scalable=no,minimum-scale=1,maximum-scale=1" />
+    <script src="//code.jquery.com/jquery-1.11.3.min.js"></script>
+    <script src="../src/jCanvas.js"></script>
+    <script type="text/javascript" src="http://rawgit.com/jatecl/jTimeline/master/src/jTimeline.js"></script>
+    <style type="text/css">
+        html { overflow: auto; }
+        body { margin: 5px 0 0 5px; }
+        .a1 { display: inline-block; margin: 10px 10px 10px 0; width: 32px; height: 32px; line-height: 32px; text-align: center; border: 1px solid #ccc; text-decoration: none; }
+    </style>
+</head>
+<body>
+<script>
+    var img = new Image();
+    img.onload = function () {
+        var w1 = document.documentElement.clientWidth - 10, h1 = w1 / img.width * img.height;
+        var dx = 5, dy = 5;
+
+        //编辑框
+        var stage = jCanvas.stage();
+        stage.resize(w1, h1);
+        stage.appendTo(document.body);
+
+        var img1 = jCanvas.image().width(w1).height(h1).left(w1 / 2).top(h1 / 2).x(-w1 / 2).y(-h1 / 2).src(img).appendTo(stage);
+        jTimeline.line().to(img1, 5, { rotate: 360 }, jTimeline.ease.linear.easeNone).play({ repeat: 0 });
+    };
+    img.src = "demo.jpg";
+</script>
+</body>
+</html>
