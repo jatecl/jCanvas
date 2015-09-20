@@ -26,7 +26,7 @@
         stage.appendTo(document.body);
 
         var img1 = jCanvas.image().width(w1).height(h1).left(w1 / 2).top(h1 / 2).x(-w1 / 2).y(-h1 / 2).src(img).appendTo(stage);
-        jTimeline.line().to(img1, 5, { rotate: 360 }, jTimeline.ease.linear.easeNone).play({ repeat: 0 });
+        jTimeline().to(img1, 5, { rotate: 360 }, jTimeline.ease.linear.easeNone).play({ repeat: 0 });
     };
     img.src = "demo.jpg";
 </script>
