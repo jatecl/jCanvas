@@ -119,7 +119,7 @@ var jCanvas = (function () {
         top: 0,
         opacity: 1
     };
-    var shapeObjFeilds = {
+    var shapeObjFields = {
         zIndex: 0,
         shadowColor: null,
         shadowOffsetX: 0,
@@ -143,7 +143,7 @@ var jCanvas = (function () {
             if (this._parent) this._parent.triggerChanged();
         };
         t.prototype.triggerChanged = _setFunction;
-        for (var i in shapeObjFeilds) cls.createMethod(t, i, shapeObjFeilds[i], _setFunction);
+        for (var i in shapeObjFields) cls.createMethod(t, i, shapeObjFields[i], _setFunction);
 
         //matrix
         //属性
@@ -258,7 +258,7 @@ var jCanvas = (function () {
             };
             //得到当前所有值
             ref.prototype.values = function () {
-                return cls.copy({}, shapeObjProperties, shapeObjFeilds, attrs, this._properties);
+                return cls.copy({}, shapeObjProperties, shapeObjFields, attrs, this._properties);
             };
             //返回工厂方法
             v[name] = function (prop) {
