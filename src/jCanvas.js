@@ -1,7 +1,7 @@
 /**
  * Created by Jat on 2015/9/17.
  */
-var jCanvas = (function () {
+var jCanvas = (function (require) {
     /**
 	 * @property 类型方法
 	 */
@@ -260,6 +260,21 @@ var jCanvas = (function () {
             ref.prototype.values = function () {
                 return cls.copy({}, shapeObjProperties, shapeObjFields, attrs, this._properties);
             };
+            //克隆对像
+            ref.prototype.clone = function (par) {
+                var pops = this.values();
+                var obj = new ref(pops);
+                if (par) par.append(obj);
+                var children = this._children;
+                if (children) {
+                    for (var c in children) {
+                        if (children.hasOwnProperty(c)) {
+                            children[c].clone(obj);
+                        }
+                    }
+                }
+                return obj;
+            };
             //返回工厂方法
             v[name] = function (prop) {
                 return new ref(prop);
@@ -489,6 +504,7 @@ var jCanvas = (function () {
         };
         //canvas类的构造函数
         var t = function () {
+            if (!(this instanceof t)) return new t();
             var ele = document.createElement('canvas');
             this._canvas = ele.getContext('2d');
             this._element = ele;
@@ -538,6 +554,7 @@ var jCanvas = (function () {
         var draw = {
             //绘制线条
             line: function (ctx, prop) {
+                if (prop.x1() == prop.x2() && prop.y1() == prop.y2()) return;
                 ctx.beginPath();
                 ctx.moveTo(prop.x1(), prop.y1());
                 ctx.lineTo(prop.x2(), prop.y2());
@@ -657,7 +674,7 @@ var jCanvas = (function () {
             //多边形
             polygon: function (ctx, prop) {
                 var p = prop.path();
-                    console.log(p);
+
                 if (!p || p.length < 4) return;
                 ctx.beginPath();
                 ctx.moveTo(p[0], p[1]);
@@ -673,7 +690,7 @@ var jCanvas = (function () {
                 if (!prop._cache || prop._cache.src != prop.src()) {
                     if (typeof prop.src() == 'string') {
                         img = new Image();
-                        img.onload = function() {
+                        img.onload = function () {
                             prop.triggerChanged();
                         };
                         img.src = prop.src();
@@ -685,6 +702,10 @@ var jCanvas = (function () {
                 } else img = prop._cache.image;
                 var w = prop.width();
                 var h = prop.height();
+                if ((w || h) && img.width && img.height) {
+                    if (w && !h) h = w * img.height / img.width;
+                    if (!w && h) w = h * img.width / img.height;
+                }
                 var cw = prop.clipw(), ch = prop.cliph();
                 if (w && h) try {
 
@@ -722,13 +743,13 @@ var jCanvas = (function () {
                 if (tmp && (tmp in v.fontWeight)) s += tmp + " ";
 
                 var fsize = (prop.fontSize() || 10);
-                if (typeof fsize === "number") fsize += "px";
+                if (typeof fsize === "number") fsize += 'px';
                 s += fsize;
 
 
                 var lh = prop.lineHeight();
                 if (lh) {
-                    if (typeof lh === "number") lh += "px";
+                    if (typeof lh === "number") lh += 'px';
                     s += "/" + lh;
                 }
 
@@ -756,6 +777,7 @@ var jCanvas = (function () {
         };
         //开放绘制函数，方便扩展
         t.draws = draw;
+        t.strokeFill = _strokeFill;
         //绘制对象
         t.prototype._drawItem = function (ctx, prop) {
             var opt = prop.opacity();
@@ -768,11 +790,11 @@ var jCanvas = (function () {
             if (tr) {
                 //matrix
                 ctx.transform(prop.scaleX(),
-					prop.skewY() && Math.tan(prop.skewY() * Math.PI / 180),
-					prop.skewX() && Math.tan(prop.skewX() * Math.PI / 180),
-					prop.scaleY(),
-					prop.left(),
-					prop.top());
+                    prop.skewY() && Math.tan(prop.skewY() * Math.PI / 180),
+                    prop.skewX() && Math.tan(prop.skewX() * Math.PI / 180),
+                    prop.scaleY(),
+                    prop.left(),
+                    prop.top());
                 prop.rotate() && ctx.rotate(prop.rotate() / 180 * Math.PI);
                 if (prop.matrix()) {
                     ctx.transform.apply(ctx, prop.matrix());
@@ -815,8 +837,9 @@ var jCanvas = (function () {
             }
             this._ischanged = false;
 
-            this._canvas.clearRect(0, 0, this._element.width, this._element.height);
+            if (!this._keep) this._canvas.clearRect(0, 0, this._element.width, this._element.height);
             this._sortedChs && this._sortedChs.each(function (oi, e) { e._drawItem(e._canvas, oi); }, this);
+            this.trigger("draw");
         };
         //重置大小
         t.prototype.resize = function (w, h) {
@@ -851,10 +874,8 @@ var jCanvas = (function () {
                 img.src = urls[i];
             }
         };
-        return function () {
-            return new t();
-        };
+        return t;
     })();
 
     return v;
-})();;
+})();
